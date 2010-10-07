@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>pyflakes</string>
+	<key>uuid</key>
+	<string>CB0CCCA5-ED6A-469C-9174-66E338A74A17</string>
+</dict>
+</plist>

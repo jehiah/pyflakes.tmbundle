@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveActiveFile</string>
+	<key>bundleUUID</key>
+	<string>7C8D7C1C-076A-42DE-AC49-A984090410F7</string>
+	<key>capturePattern</key>
+	<string>^(.*)\s+line:\s+(\d+)\s+col:\s+(\d+).*$</string>
+	<key>columnCaptureRegister</key>
+	<string>3</string>
+	<key>command</key>
+	<string>TPY=${TM_PYTHON:-python}
+# Python Validate w/ pyflakes on Save
+# by Jehiah Czebotar jehiah@gmail.com
+
+# configuration:
+# set this to the path of the pyflakes script
+PYFLAKES=/Library/Frameworks/Python.framework/Versions/Current/bin/pyflakes
+if [ ! -f $PYFLAKES ]; then
+	PYFLAKES=/usr/local/bin/pyflakes
+fi
+
+if [ ! -f $PYFLAKES ]; then
+	echo "pyflakes not configured"
+	exit 1;
+fi
+
+DISPLAY_OK=0; # 0 or 1 - display a message when there are no errors
+
+###################
+PROBLEMS=`"$PYFLAKES" "$TM_FILEPATH"`
+
+if [ "$PROBLEMS" != "" ]; then
+	LINES=`echo "$PROBLEMS" | wc -l | sed -e 's/ //g'`
+	ESCAPEDPATH=`echo $TM_FILEPATH | sed -e 's/\//\\\\\//g'`
+	if [ "$LINES" -eq "1" ]; then
+		echo "=== $LINES ERROR ===";
+	else
+		echo "=== $LINES ERRORS ===";
+	fi
+	echo $PROBLEMS | perl -p -e "s/($ESCAPEDPATH):([0-9]*):/\n\2:/g"
+else
+	if [ $DISPLAY_OK == 1 ]; then
+		echo "OK - no errors found";
+	fi;
+fi;</string>
+	<key>fileCaptureRegister</key>
+	<string>1</string>
+	<key>input</key>
+	<string>none</string>
+	<key>keyEquivalent</key>
+	<string>@s</string>
+	<key>lineCaptureRegister</key>
+	<string>2</string>
+	<key>name</key>
+	<string>Validate w/ pyflakes on Save</string>
+	<key>output</key>
+	<string>showAsTooltip</string>
+	<key>scope</key>
+	<string>source.python</string>
+	<key>uuid</key>
+	<string>7785C4AD-8DA8-4E0E-B5B5-1B1F1027F3C9</string>
+</dict>
+</plist>

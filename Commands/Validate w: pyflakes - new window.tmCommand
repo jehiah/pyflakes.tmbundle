@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>bundleUUID</key>
+	<string>7C8D7C1C-076A-42DE-AC49-A984090410F7</string>
+	<key>command</key>
+	<string>TPY=${TM_PYTHON:-python}
+# Python Validate w/ pyflakes - new window
+# by Jehiah Czebotar jehiah@gmail.com
+
+# configuration:
+# set this to the path of the pyflakes script
+PYFLAKES=/Library/Frameworks/Python.framework/Versions/Current/bin/pyflakes
+if [ ! -f $PYFLAKES ]; then
+	PYFLAKES=/usr/local/bin/pyflakes
+fi
+
+if [ ! -f $PYFLAKES ]; then
+	echo "pyflakes not configured"
+	exit 1;
+fi
+
+###################
+PROBLEMS=`"$PYFLAKES" "$TM_FILEPATH"`
+LINES=`echo "$PROBLEMS" | wc -l | sed 's/ //g'`
+
+# replace the path with something we can use as a regex
+ESCAPEDPATH=`echo "$TM_FILEPATH" | sed -e 's/\//\\\\\//g'`
+# convert each line to a html txmt://open?url=file:...&amp;line= link
+# \1 and \2 are backreferences to the matched file and line number
+HTML=`echo "$PROBLEMS" | sed -e "s/\($ESCAPEDPATH\):\([0-9]*\):/\&lt;br\&gt;\&lt;a href=\"txmt:\/\/open?url=file:\/\/\1\&amp;line=\2\"&gt;\2\&lt;\/a\&gt;/g"`
+# output a simple html page
+echo "&lt;html&gt;&lt;body&gt;";
+echo "&lt;p&gt;&lt;strong&gt;$TM_FILEPATH&lt;/strong&gt;&lt;/p&gt;"
+echo "&lt;h3&gt;$LINES Errors&lt;/h3&gt;";
+echo "&lt;p&gt;$HTML&lt;/p&gt;";
+echo "&lt;/body&gt;&lt;/html&gt;";</string>
+	<key>input</key>
+	<string>none</string>
+	<key>keyEquivalent</key>
+	<string>^v</string>
+	<key>name</key>
+	<string>Validate w/ pyflakes - new window</string>
+	<key>output</key>
+	<string>showAsHTML</string>
+	<key>scope</key>
+	<string>source.python</string>
+	<key>uuid</key>
+	<string>FCA3A379-A46C-4921-80E5-6D4B8DFFBDA8</string>
+</dict>
+</plist>
